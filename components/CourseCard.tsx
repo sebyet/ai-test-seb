@@ -2,27 +2,31 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 
 export interface CourseCardProps {
-  title: string
+  name: string
   description: string
   price: string
   duration: string
+  course_id: string
 }
 
-export function CourseCard({ title, description, price, duration }: CourseCardProps) {
+export function CourseCard({ name, description, price, duration, course_id }: CourseCardProps) {
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
+  
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>{name}</CardTitle>
         <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Duration: {duration}</p>
-        <p>Price: {price}</p>
+        </CardHeader>
+        <CardContent>
+          <p>Duration: {duration}</p>
+          <p>Price: {price}</p>
       </CardContent>
-      <CardFooter>
-        <Button>Enroll Now</Button>
-      </CardFooter>
-    </Card>
+        <CardFooter>
+        <a href={`https://www.haufe-akademie.com/courses/${course_id}`}>
+          <Button>Enroll Now</Button>
+        </a>
+        </CardFooter>
+      </Card>
   )
 }
 
