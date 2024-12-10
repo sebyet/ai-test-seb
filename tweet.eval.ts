@@ -12,9 +12,6 @@ const storage = createStorage({
     base: "./llm-cache.local",
   }),
 });
-const noHashtagsScorer = createScorer("No Hashtags", (input: { output: string }) => {
-  return input.output.includes("#") ? 0 : 1;
-});
 
 evalite("Content generation", {
   data: async () => {
@@ -53,20 +50,22 @@ evalite("Content generation", {
       start,
       end: performance.now(),
       output: result.text,
-      prompt: [
-        {
-          role: "user",
-          content: input,
-        },
-      ],
+      input,
       usage: {
-        completionTokens: result.usage?.completionTokens ?? 0,
-        promptTokens: result.usage?.promptTokens ?? 0,
+        completionTokens: result.usage.completionTokens,
+        promptTokens: result.usage.promptTokens,
       },
     });
 
     return result.text;
 
   },
-  scorers: [noHashtagsScorer],
+  scorers: [
+    createScorer({
+      name: "No Hashtags",
+      scorer: ({ output }) => {
+        return output.includes("#") ? 0 : 1;
+      },
+    }),
+  ],
 });
